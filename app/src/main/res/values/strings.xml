@@ -6,7 +6,16 @@
     <string name="quantity">Quantity</string>
     <string name="period">Period</string>
     <string name="description">Description</string>
-    <string name="period_prefix">Once in: </string>
+    <string name="period_prefix"> time(s) in: </string>
     <string name="priority_header">Priority:</string>
     <string name="two">2</string>
+
+    <string-array name="priority_list">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
 </resources>

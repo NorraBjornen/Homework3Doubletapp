@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        Repository.habits.sortBy { it.priority }
         adapter?.notifyDataSetChanged()
     }
 }

@@ -11,6 +11,7 @@ class Repository {
                 1,
                 HabitType.GOOD,
                 1,
+                3,
                 Color.GREEN
             ),
             Habit(
@@ -19,12 +20,21 @@ class Repository {
                 2,
                 HabitType.BAD,
                 2,
+                1,
                 Color.BLACK
             )
         )
 
         fun addHabit(habit: Habit){
             habits.add(habit)
+        }
+
+        fun getHabit(name: String) : Habit? {
+            habits.forEach {
+                if(it.name == name)
+                    return it
+            }
+            return null
         }
     }
 }

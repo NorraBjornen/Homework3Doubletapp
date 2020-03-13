@@ -49,22 +49,32 @@
                             android:layout_height="wrap_content">
 
                                 <TextView
-                                    android:id="@+id/period_prefix"
+                                    android:id="@+id/quantity"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/period_prefix"
                                     android:textSize="14dp"
+                                    android:textStyle="bold"
                                     app:layout_constraintLeft_toLeftOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"/>
 
                                 <TextView
-                                    android:id="@+id/priority"
+                                    android:id="@+id/period_prefix"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="@string/period_prefix"
+                                    android:textSize="14dp"
+                                    app:layout_constraintLeft_toRightOf="@id/quantity"
+                                    app:layout_constraintTop_toTopOf="parent"/>
+
+                                <TextView
+                                    android:id="@+id/period"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
                                     android:text="@string/two"
                                     android:textSize="14dp"
-                                    android:textStyle="bold"
                                     app:layout_constraintLeft_toRightOf="@id/period_prefix"
                                     app:layout_constraintTop_toTopOf="parent"/>
 
@@ -87,7 +97,7 @@
                             android:text="@string/priority_header"/>
 
                         <TextView
-                            android:id="@+id/period"
+                            android:id="@+id/priority"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textAlignment="center"

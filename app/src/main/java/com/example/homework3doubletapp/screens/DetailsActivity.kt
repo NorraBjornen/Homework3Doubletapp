@@ -16,31 +16,17 @@ import kotlinx.android.synthetic.main.activity_details.*
 
 
 class DetailsActivity : AppCompatActivity() {
+
+    var habit : Habit? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
-        val arrayList = listOf(1, 2, 3, 4, 5)
+        val name = intent.getStringExtra("habit")
 
-        val arrayAdapter: ArrayAdapter<Int> =
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, arrayList)
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        priority_spinner.adapter = arrayAdapter
-        priority_spinner.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val selected: Int = parent.getItemAtPosition(position).toString().toInt()
-                Toast
-                    .makeText(parent.context, selected.toString(), Toast.LENGTH_SHORT)
-                    .show()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
+        if(name != null)
+            habit = Repository.getHabit(name)
 
         save.setOnClickListener {
             if(!bad_radio.isChecked && !good_radio.isChecked){
@@ -56,18 +42,43 @@ class DetailsActivity : AppCompatActivity() {
                 else -> throw IllegalStateException("No type selected")
             }
 
-            val habit = Habit(
-                name_edit.text.toString(),
-                description_edit.text.toString(),
-                priority_spinner.selectedItem.toString().toInt(),
-                type,
-                period_edit.text.toString().toInt(),
-                Color.BLUE
-            )
+            if(habit == null){
+                val habit = Habit(
+                    name_edit.text.toString(),
+                    description_edit.text.toString(),
+                    priority_spinner.selectedItem.toString().toInt(),
+                    type,
+                    period_edit.text.toString().toInt(),
+                    quantity_edit.text.toString().toInt(),
+                    Color.BLUE
+                )
 
-            Repository.addHabit(habit)
+                Repository.addHabit(habit)
+            } else {
+                habit?.name = name_edit.text.toString()
+                habit?.description = description_edit.text.toString()
+                habit?.priority = priority_spinner.selectedItem.toString().toInt()
+                habit?.type = type
+                habit?.period =  period_edit.text.toString().toInt()
+                habit?.quantity = quantity_edit.text.toString().toInt()
+                habit?.color = Color.BLUE
+            }
+
+
 
             finish()
+        }
+
+        if(habit != null){
+            name_edit.setText(habit?.name)
+            description_edit.setText(habit?.description)
+            priority_spinner.setSelection(habit?.priority!! - 1)
+            when (habit?.type) {
+                HabitType.GOOD -> good_radio.isChecked = true
+                HabitType.BAD -> bad_radio.isChecked = true
+            }
+            quantity_edit.setText(habit?.quantity!!.toString())
+            period_edit.setText(habit?.period!!.toString())
         }
     }
 }
