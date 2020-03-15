@@ -29,7 +29,9 @@ class Repository {
             habits.add(habit)
         }
 
-        fun getHabit(name: String) : Habit? {
+        fun getHabit(name: String?) : Habit? {
+            if(name == null)
+                return null
             habits.forEach {
                 if(it.name == name)
                     return it
