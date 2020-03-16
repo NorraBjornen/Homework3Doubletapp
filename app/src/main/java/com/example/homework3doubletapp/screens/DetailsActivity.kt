@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
 import com.example.homework3doubletapp.R
 import com.example.homework3doubletapp.model.Habit
 import com.example.homework3doubletapp.model.HabitType
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_details.*
 class DetailsActivity : AppCompatActivity(), View.OnClickListener{
 
     var habit : Habit? = null
+    var selectedColor = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,15 +37,49 @@ class DetailsActivity : AppCompatActivity(), View.OnClickListener{
 
         lp.width = resources.getDimension(R.dimen.square_size).toInt()
         lp.height = resources.getDimension(R.dimen.square_size).toInt()
-        lp.marginEnd = resources.getDimension(R.dimen.margin_end).toInt()
+        lp.marginEnd = resources.getDimension(R.dimen.margin_side).toInt()
+        lp.marginStart = resources.getDimension(R.dimen.margin_side).toInt()
 
-        for(i in 0..16){
-            val color = Color.HSVToColor(floatArrayOf(i*k, 100f, 100f))
+
+        val marginSide = resources.getDimension(R.dimen.margin_side).toInt()
+        val marginTop = resources.getDimension(R.dimen.padding_vertical).toInt()
+
+        val height = resources.getDimension(R.dimen.height).toInt()
+        val width = (resources.getDimension(R.dimen.square_size).toInt() + 2 * marginSide) * 15
+
+        val bitmap = resources.getDrawable(R.drawable.hue2).toBitmap(width = width, height = height)
+
+
+        for(i in 0..15){
+
             val imageView = ImageView(this)
             imageView.setImageResource(R.drawable.square)
             imageView.layoutParams = lp
-            imageView.setColorFilter(color)
+            imageView.setBackgroundResource(R.drawable.border_black)
+
             linear_layout.addView(imageView)
+
+            val xPosition = (marginSide + lp.width) * i + marginSide + (lp.width / 2)
+            val yPosition = marginTop + (lp.height / 2)
+
+            val pixel = bitmap.getPixel(xPosition, yPosition)
+
+            val r = Color.red(pixel)
+            val g = Color.green(pixel)
+            val b = Color.blue(pixel)
+
+            val color = Color.rgb(r, g, b)
+
+            imageView.setColorFilter(color)
+
+            imageView.setOnClickListener {
+                selected_color.colorFilter = imageView.colorFilter
+                selectedColor = color
+                val a = FloatArray(3)
+                Color.colorToHSV(color, a)
+                rgb.text = resources.getString(R.string.rgb_formatted, r, g, b)
+                hsv.text = resources.getString(R.string.hsv_formatted, a[0], a[1], a[2])
+            }
         }
 
         setValues()
@@ -87,7 +123,7 @@ class DetailsActivity : AppCompatActivity(), View.OnClickListener{
                 type,
                 period_edit.text.toString().toInt(),
                 quantity_edit.text.toString().toInt(),
-                Color.BLUE
+                selectedColor
             )
 
             Repository.addHabit(habit)
@@ -98,7 +134,7 @@ class DetailsActivity : AppCompatActivity(), View.OnClickListener{
             habit?.type = type
             habit?.period =  period_edit.text.toString().toInt()
             habit?.quantity = quantity_edit.text.toString().toInt()
-            habit?.color = Color.BLUE
+            habit?.color = selectedColor
         }
 
         finish()

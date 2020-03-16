@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="60dp">
+        android:padding="30dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,18 +101,73 @@
                 android:importantForAutofill="no"/>
 
             <HorizontalScrollView
+                android:layout_marginBottom="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/hue2"
+                        android:scaleType="centerCrop"
+                        android:layout_alignEnd="@id/linear_layout"
+                        android:layout_alignStart="@id/linear_layout"
+                        android:layout_alignTop="@id/linear_layout"
+                        android:layout_alignBottom="@id/linear_layout"
+                        tools:ignore="ContentDescription" />
+
+                    <LinearLayout
+                        android:id="@+id/linear_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/height"
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/padding_vertical"
+                        android:paddingBottom="@dimen/padding_vertical">
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </HorizontalScrollView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:id="@+id/linear_layout"
-                    android:layout_width="match_parent"
+
+                <ImageView
+                    android:id="@+id/selected_color"
+                    android:layout_width="@dimen/square_size"
+                    android:layout_height="@dimen/square_size"
+                    android:src="@drawable/square"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+
+                <TextView
+                    android:id="@+id/hsv"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:text="@string/hsv_formatted"
+                    app:layout_constraintTop_toTopOf="@id/selected_color"
+                    app:layout_constraintLeft_toRightOf="@id/selected_color"
+                    app:layout_constraintRight_toRightOf="parent"/>
 
-                </LinearLayout>
 
-            </HorizontalScrollView>
+                <TextView
+                    android:id="@+id/rgb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rgb_formatted"
+                    app:layout_constraintTop_toBottomOf="@id/hsv"
+                    app:layout_constraintLeft_toRightOf="@id/selected_color"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 

@@ -9,6 +9,11 @@
     <string name="period_prefix"> time(s) in: </string>
     <string name="priority_header">Priority:</string>
     <string name="two">2</string>
+    <string name="selected_color_header">Selected color:</string>
+    <string name="RGB">RGB:</string>
+    <string name="HSV">HSV:</string>
+    <string name="rgb_formatted">R:%d G:%d B:%d</string>
+    <string name="hsv_formatted">H:%f S:%f V:%f</string>
 
     <string-array name="priority_list">
         <item>1</item>
