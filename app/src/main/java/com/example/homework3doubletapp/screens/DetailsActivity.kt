@@ -28,7 +28,6 @@ class DetailsActivity : AppCompatActivity(), View.OnClickListener{
         save.setOnClickListener(this)
 
         addImages()
-
         setValues()
     }
 
