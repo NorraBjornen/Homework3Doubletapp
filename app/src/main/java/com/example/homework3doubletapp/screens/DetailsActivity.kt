@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.example.homework3doubletapp.R
 import com.example.homework3doubletapp.model.Habit
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_details.*
 class DetailsActivity : AppCompatActivity(), View.OnClickListener{
 
     var habit : Habit? = null
-    var selectedColor = 0
+    var selectedColor = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,29 +27,35 @@ class DetailsActivity : AppCompatActivity(), View.OnClickListener{
 
         save.setOnClickListener(this)
 
+        addImages()
 
+        setValues()
+    }
 
-        val k : Float = 360f / 17
-
+    private fun addImages(){
         val lp = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
 
-        lp.width = resources.getDimension(R.dimen.square_size).toInt()
-        lp.height = resources.getDimension(R.dimen.square_size).toInt()
-        lp.marginEnd = resources.getDimension(R.dimen.margin_side).toInt()
-        lp.marginStart = resources.getDimension(R.dimen.margin_side).toInt()
-
+        val squareSize = resources.getDimension(R.dimen.square_size).toInt()
 
         val marginSide = resources.getDimension(R.dimen.margin_side).toInt()
         val marginTop = resources.getDimension(R.dimen.padding_vertical).toInt()
 
-        val height = resources.getDimension(R.dimen.height).toInt()
-        val width = (resources.getDimension(R.dimen.square_size).toInt() + 2 * marginSide) * 15
+        val spectrumHeight = resources.getDimension(R.dimen.height).toInt()
+        val spectrumWidth = (resources.getDimension(R.dimen.square_size).toInt() + 2 * marginSide) * 16
 
-        val bitmap = resources.getDrawable(R.drawable.hue2).toBitmap(width = width, height = height)
+        val bitmap = ResourcesCompat
+            .getDrawable(resources, R.drawable.hue2, null)!!
+            .toBitmap(width = spectrumWidth, height = spectrumHeight)
 
+        lp.width = squareSize
+        lp.height = squareSize
+        lp.marginEnd = marginSide
+        lp.marginStart = marginSide
+
+        val halfSize = squareSize / 2
 
         for(i in 0..15){
 
@@ -59,8 +66,8 @@ class DetailsActivity : AppCompatActivity(), View.OnClickListener{
 
             linear_layout.addView(imageView)
 
-            val xPosition = (marginSide + lp.width) * i + marginSide + (lp.width / 2)
-            val yPosition = marginTop + (lp.height / 2)
+            val xPosition = (marginSide * 2 + squareSize) * i + marginSide + halfSize
+            val yPosition = marginTop + halfSize
 
             val pixel = bitmap.getPixel(xPosition, yPosition)
 
@@ -81,10 +88,8 @@ class DetailsActivity : AppCompatActivity(), View.OnClickListener{
                 hsv.text = resources.getString(R.string.hsv_formatted, a[0], a[1], a[2])
             }
         }
-
-        setValues()
     }
-
+    
     private fun setValues(){
         habit = Repository.getHabit(intent.getStringExtra("habit"))
 
@@ -98,13 +103,20 @@ class DetailsActivity : AppCompatActivity(), View.OnClickListener{
             }
             quantity_edit.setText(habit?.quantity!!.toString())
             period_edit.setText(habit?.period!!.toString())
+            selected_color.setColorFilter(habit?.color!!)
+            selectedColor = habit?.color!!
         }
     }
 
     override fun onClick(v: View?) {
-        if(!bad_radio.isChecked && !good_radio.isChecked){
+        if(name_edit.text.isEmpty()
+            || selectedColor == -1
+            || quantity_edit.text.isEmpty()
+            || period_edit.text.isEmpty()
+            || description_edit.text.isEmpty()
+            || (!bad_radio.isChecked && !good_radio.isChecked)){
             Toast
-                .makeText(this, "Select habit type!", Toast.LENGTH_SHORT)
+                .makeText(this, "Fill in all the fields!", Toast.LENGTH_SHORT)
                 .show()
             return
         }
