@@ -6,9 +6,10 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.homework3doubletapp.R
+import com.example.homework3doubletapp.model.HabitType
 import com.example.homework3doubletapp.screens.AboutFragment
 import com.example.homework3doubletapp.screens.DetailsFragment
-import com.example.homework3doubletapp.screens.ListFragment
+import com.example.homework3doubletapp.screens.MainFragment
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -25,14 +26,15 @@ class MainActivity : AppCompatActivity(),
         navigation_drawer.setNavigationItemSelectedListener(this)
 
         val fragment =
-            ListFragment.newInstance(
-                "some name"
+            MainFragment.newInstance(
+                "some name",
+                HabitType.BAD
             )
 
         val transaction = supportFragmentManager.beginTransaction()
 
         transaction
-            .add(R.id.main_container, fragment, "list_fragment")
+            .add(R.id.main_container, fragment, "main_fragment")
             .commit()
     }
 
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun startMainScreen() {
-        val fragment = ListFragment.newInstance("some name")
+        val fragment = MainFragment.newInstance("some name", HabitType.BAD)
 
         supportFragmentManager.popBackStackImmediate()
 

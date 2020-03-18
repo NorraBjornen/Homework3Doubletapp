@@ -38,5 +38,9 @@ class Repository {
             }
             return null
         }
+
+        fun getHabits(habitType: HabitType) : List<Habit>{
+            return habits.filter { it.type == habitType }
+        }
     }
 }

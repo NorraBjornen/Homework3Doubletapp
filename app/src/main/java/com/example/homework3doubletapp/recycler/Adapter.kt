@@ -5,8 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework3doubletapp.R
 import com.example.homework3doubletapp.model.Habit
+import com.example.homework3doubletapp.model.HabitType
+import com.example.homework3doubletapp.model.Repository
 
-class Adapter(private val habits: List<Habit>) : RecyclerView.Adapter<ViewHolder>() {
+class Adapter(private val habits: List<Habit>, private val habitType: HabitType) : RecyclerView.Adapter<ViewHolder>() {
+
+    private var myHabits : List<Habit> = Repository.habits.filter { it.type == habitType }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return ViewHolder(
@@ -17,8 +22,16 @@ class Adapter(private val habits: List<Habit>) : RecyclerView.Adapter<ViewHolder
             )
         )
     }
-    override fun getItemCount(): Int = habits.size
+    override fun getItemCount(): Int {
+        return myHabits.size
+    }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(habits[position])
+        holder.bind(myHabits[position])
+    }
+
+    fun setItems(){
+        myHabits = Repository.habits.filter {
+            it.type == habitType
+        }
     }
 }

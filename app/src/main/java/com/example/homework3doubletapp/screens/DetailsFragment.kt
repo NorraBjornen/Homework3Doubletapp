@@ -1,5 +1,6 @@
 package com.example.homework3doubletapp.screens
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,12 +16,20 @@ import com.example.homework3doubletapp.R
 import com.example.homework3doubletapp.model.Habit
 import com.example.homework3doubletapp.model.HabitType
 import com.example.homework3doubletapp.model.Repository
+import com.example.homework3doubletapp.screen_controller.FragmentChanger
 import kotlinx.android.synthetic.main.fragment_details.*
 
 class DetailsFragment : Fragment(), View.OnClickListener {
 
     var habit : Habit? = null
     var selectedColor = -1
+
+    var callback : FragmentChanger? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = activity as FragmentChanger
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_details, container, false)
