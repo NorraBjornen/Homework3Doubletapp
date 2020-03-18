@@ -71,21 +71,20 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.main -> {
                 startMainScreen()
-                return true
+                true
             }
             R.id.about -> {
                 startAboutScreen()
-                return true
+                true
             }
             else -> {
                 Toast.makeText(this, "MEMES", Toast.LENGTH_SHORT).show()
-                return false
+                false
             }
         }
-        return false
     }
 
 
