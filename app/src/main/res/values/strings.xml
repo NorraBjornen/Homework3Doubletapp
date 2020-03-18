@@ -14,6 +14,8 @@
     <string name="HSV">HSV:</string>
     <string name="rgb_formatted">R:%d G:%d B:%d</string>
     <string name="hsv_formatted">H:%f S:%f V:%f</string>
+    <string name="home">Home</string>
+    <string name="about">About</string>
 
     <string-array name="priority_list">
         <item>1</item>

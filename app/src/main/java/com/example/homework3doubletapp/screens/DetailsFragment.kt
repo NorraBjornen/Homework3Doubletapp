@@ -2,28 +2,31 @@ package com.example.homework3doubletapp.screens
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.Fragment
 import com.example.homework3doubletapp.R
 import com.example.homework3doubletapp.model.Habit
 import com.example.homework3doubletapp.model.HabitType
 import com.example.homework3doubletapp.model.Repository
-import kotlinx.android.synthetic.main.activity_details.*
+import kotlinx.android.synthetic.main.fragment_details.*
 
-
-class DetailsActivity : AppCompatActivity(), View.OnClickListener{
+class DetailsFragment : Fragment(), View.OnClickListener {
 
     var habit : Habit? = null
     var selectedColor = -1
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_details)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        inflater.inflate(R.layout.fragment_details, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         save.setOnClickListener(this)
 
@@ -59,7 +62,7 @@ class DetailsActivity : AppCompatActivity(), View.OnClickListener{
 
         for(i in 0..15){
 
-            val imageView = ImageView(this)
+            val imageView = ImageView(activity)
             imageView.setImageResource(R.drawable.square)
             imageView.layoutParams = lp
             imageView.setBackgroundResource(R.drawable.border_black)
@@ -89,9 +92,9 @@ class DetailsActivity : AppCompatActivity(), View.OnClickListener{
             }
         }
     }
-    
+
     private fun setValues(){
-        habit = Repository.getHabit(intent.getStringExtra("habit"))
+        habit = Repository.getHabit(arguments?.getString(ARGS_HABIT_NAME))
 
         if(habit != null){
             name_edit.setText(habit?.name)
@@ -116,7 +119,7 @@ class DetailsActivity : AppCompatActivity(), View.OnClickListener{
             || description_edit.text.isEmpty()
             || (!bad_radio.isChecked && !good_radio.isChecked)){
             Toast
-                .makeText(this, "Fill in all the fields!", Toast.LENGTH_SHORT)
+                .makeText(activity, "Fill in all the fields!", Toast.LENGTH_SHORT)
                 .show()
             return
         }
@@ -149,6 +152,20 @@ class DetailsActivity : AppCompatActivity(), View.OnClickListener{
             habit?.color = selectedColor
         }
 
-        finish()
+        activity?.supportFragmentManager?.popBackStack()
+    }
+
+    companion object {
+        private const val ARGS_NAME = "args_name"
+        private const val ARGS_HABIT_NAME = "args_habit_name"
+
+        fun newInstance(name : String, habitName : String?) : DetailsFragment{
+            val fragment =  DetailsFragment()
+            val bundle = Bundle()
+            bundle.putString(ARGS_NAME, name)
+            bundle.putString(ARGS_HABIT_NAME, habitName)
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 }
