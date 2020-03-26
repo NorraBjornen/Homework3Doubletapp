@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/main_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.homework3doubletapp.screens.AboutFragment"
+        android:label="AboutFragment" />
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.homework3doubletapp.screens.DetailsFragment"
+        android:label="DetailsFragment" >
+        <argument
+            android:name="args_habit_id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.example.homework3doubletapp.screens.ListFragment"
+        android:label="ListFragment" />
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.homework3doubletapp.screens.MainFragment"
+        android:label="MainFragment" />
+</navigation>
