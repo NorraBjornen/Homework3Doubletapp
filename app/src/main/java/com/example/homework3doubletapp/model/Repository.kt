@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 class Repository {
     companion object {
         private val mutableHasChanges: MutableLiveData<Boolean> = MutableLiveData()
-        val hasChanges: LiveData<Boolean> = mutableHasChanges
+        val hasChanges: MutableLiveData<Boolean> = mutableHasChanges
 
         private val mutableHabits = mutableListOf(
             Habit(
@@ -52,13 +52,15 @@ class Repository {
             )
         )
 
+        val habits = MutableLiveData<List<Habit>>(mutableHabits)
+
         private val mutableGoodHabits =
             mutableHabits.filter { it.type == HabitType.GOOD }.toMutableList()
         private val mutableBadHabits =
             mutableHabits.filter { it.type == HabitType.BAD }.toMutableList()
 
-        val goodHabits: MutableList<Habit> = mutableGoodHabits
-        val badHabits: MutableList<Habit> = mutableBadHabits
+        val goodHabits: List<Habit> = mutableGoodHabits
+        val badHabits: List<Habit> = mutableBadHabits
 
         fun getHabit(id: Int?): Habit {
             if (id == null || id == -1)

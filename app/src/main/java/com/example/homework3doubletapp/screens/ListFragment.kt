@@ -6,19 +6,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.example.homework3doubletapp.BottomSheetFragment
 import com.example.homework3doubletapp.R
 import com.example.homework3doubletapp.addDivider
+import com.example.homework3doubletapp.model.Habit
 import com.example.homework3doubletapp.model.HabitType
 import com.example.homework3doubletapp.model.ListViewModel
-import com.example.homework3doubletapp.model.Repository
 import com.example.homework3doubletapp.recycler.Adapter
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.fragment_list.*
 
@@ -28,7 +27,7 @@ class ListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+        viewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return ListViewModel() as T
             }
@@ -51,48 +50,13 @@ class ListFragment : Fragment() {
         val habitType = arguments?.get(ARGS_TYPE) as HabitType
 
         adapter = Adapter()
-        val items =
-            if (habitType == HabitType.GOOD)
-                viewModel.goodHabits
-            else
-                viewModel.badHabits
-
-        adapter.setItems(items)
         recycler.adapter = adapter
 
-        sheet_search.addTextChangedListener {editable ->
-            val input = editable.toString()
-            val newItems = items.filter { it.name!!.startsWith(input) }
-            adapter.setItems(newItems)
-            adapter.notifyDataSetChanged()
-        }
-
-        sheet_straight.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                adapter.straight = true
-                adapter.notifyDataSetChanged()
-            }
-        }
-
-        sheet_reverse.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                adapter.straight = false
-                adapter.notifyDataSetChanged()
-            }
-        }
-
-        (if(viewModel.straight)
-            sheet_straight
-        else
-            sheet_reverse).isChecked = true
-
-        val sheetBehavior = BottomSheetBehavior.from(bottom_sheet)
         bottom_sheet.setOnClickListener {
-            sheetBehavior.state =
-                if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED)
-                    BottomSheetBehavior.STATE_EXPANDED
-                else
-                    BottomSheetBehavior.STATE_COLLAPSED
+            BottomSheetFragment().show(
+                requireActivity().supportFragmentManager,
+                null
+            )
         }
 
         fab.setOnClickListener {
@@ -100,11 +64,27 @@ class ListFragment : Fragment() {
             n.navigate(R.id.detailsFragment)
         }
 
+        (if (habitType == HabitType.GOOD) viewModel.goodHabits else viewModel.badHabits).observe(
+            viewLifecycleOwner,
+            Observer {
+                updateList(it!!)
+            })
+
         viewModel.hasChanges.observe(viewLifecycleOwner, Observer {
-            adapter.notifyDataSetChanged()
+            val list =
+                (if (habitType == HabitType.GOOD)
+                    viewModel.goodHabits
+                else
+                    viewModel.badHabits).value
+
+            updateList(list!!)
         })
     }
 
+    private fun updateList(list: List<Habit>) {
+        adapter.setItems(list)
+        adapter.notifyDataSetChanged()
+    }
 
     companion object {
         private const val ARGS_NAME = "args_name"
