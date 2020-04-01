@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.example.homework3doubletapp.model.ListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.bottom_sheet.*
@@ -54,7 +53,7 @@ class BottomSheetFragment: BottomSheetDialogFragment() {
             }
         }
 
-        (if(viewModel.straight)
+        (if(viewModel.straightOrder)
             sheet_straight
         else
             sheet_reverse).isChecked = true

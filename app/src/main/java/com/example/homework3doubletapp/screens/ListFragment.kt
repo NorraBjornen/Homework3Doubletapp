@@ -11,10 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.example.homework3doubletapp.App
 import com.example.homework3doubletapp.BottomSheetFragment
 import com.example.homework3doubletapp.R
 import com.example.homework3doubletapp.addDivider
-import com.example.homework3doubletapp.model.Habit
 import com.example.homework3doubletapp.model.HabitType
 import com.example.homework3doubletapp.model.ListViewModel
 import com.example.homework3doubletapp.recycler.Adapter
@@ -64,26 +64,20 @@ class ListFragment : Fragment() {
             n.navigate(R.id.detailsFragment)
         }
 
-        (if (habitType == HabitType.GOOD) viewModel.goodHabits else viewModel.badHabits).observe(
-            viewLifecycleOwner,
-            Observer {
-                updateList(it!!)
-            })
+        viewModel.getHabits().observe(viewLifecycleOwner, Observer { list ->
+            val actualItems =
+                if (habitType == HabitType.GOOD) {
+                    list.filter { it.type == HabitType.GOOD }
+                } else {
+                    list.filter { it.type == HabitType.BAD }
+                }
 
-        viewModel.hasChanges.observe(viewLifecycleOwner, Observer {
-            val list =
-                (if (habitType == HabitType.GOOD)
-                    viewModel.goodHabits
-                else
-                    viewModel.badHabits).value
-
-            updateList(list!!)
+            adapter.setItems(actualItems)
         })
-    }
 
-    private fun updateList(list: List<Habit>) {
-        adapter.setItems(list)
-        adapter.notifyDataSetChanged()
+        viewModel.filterAndOrderChanged.observe(viewLifecycleOwner, Observer {
+            adapter.actualizeItems(viewModel.filterString, viewModel.straightOrder)
+        })
     }
 
     companion object {

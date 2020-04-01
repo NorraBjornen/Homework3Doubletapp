@@ -36,7 +36,7 @@ class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(con
 
         containerView.setOnClickListener {
             val bundle = Bundle()
-            bundle.putInt(DetailsFragment.ARGS_HABIT_ID, habit.id)
+            bundle.putInt(DetailsFragment.ARGS_HABIT_ID, habit.id ?: -1)
             Navigation.findNavController(containerView.context as Activity, R.id.nav_host_fragment)
                 .navigate(R.id.detailsFragment, bundle)
         }

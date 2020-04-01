@@ -45,7 +45,7 @@ class DetailsFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         save.setOnClickListener(this)
 
-        habit = viewModel.getHabit(arguments?.getInt(ARGS_HABIT_ID))
+        habit = viewModel.getHabit(arguments?.getInt(ARGS_HABIT_ID) ?: -1)
 
         addImages()
         setValues()

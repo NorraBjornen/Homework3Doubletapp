@@ -1,19 +1,24 @@
 package com.example.homework3doubletapp.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class Habit(
-    var id: Int,
-    var name: String?,
-    var description: String?,
-    var priority: Int,
-    var type: HabitType,
-    var period: Int,
-    var quantity: Int,
-    var color: Int
+    @ColumnInfo var name: String?,
+    @ColumnInfo var description: String?,
+    @ColumnInfo var priority: Int,
+    @ColumnInfo var type: HabitType,
+    @ColumnInfo var period: Int,
+    @ColumnInfo var quantity: Int,
+    @ColumnInfo var color: Int
 ) {
+    @PrimaryKey(autoGenerate = true) var id: Int? = null
+
     companion object {
         fun create(): Habit {
             return Habit(
-                -1,
                 null,
                 null,
                 -1,

@@ -6,10 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.homework3doubletapp.R
 import com.example.homework3doubletapp.model.Habit
 
-class Adapter: RecyclerView.Adapter<ViewHolder>() {
+class Adapter : RecyclerView.Adapter<ViewHolder>() {
 
-    private lateinit var myHabits: List<Habit>
-    var straight = true
+    private var filterString = ""
+    private val straightOrder = true
+
+    private var myHabits: List<Habit> = listOf()
+    private var currentItems: List<Habit> = myHabits
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -23,20 +26,27 @@ class Adapter: RecyclerView.Adapter<ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return myHabits.size
+        return currentItems.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val pos =
-            if(straight)
-                position
-            else
-                itemCount - position - 1
-
-        holder.bind(myHabits[pos])
+        holder.bind(currentItems[position])
     }
 
     fun setItems(list: List<Habit>){
         myHabits = list
+        actualizeItems(filterString, straightOrder)
+    }
+
+    fun actualizeItems(prefix: String, order: Boolean) {
+        currentItems = myHabits.filter { it.name?.startsWith(prefix) ?: false }
+
+        currentItems =
+            if (order)
+                currentItems.sortedBy { it.priority }
+            else
+                currentItems.sortedByDescending { it.priority }
+
+        notifyDataSetChanged()
     }
 }
