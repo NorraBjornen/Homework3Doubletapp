@@ -6,20 +6,18 @@ import androidx.lifecycle.ViewModel
 
 class ListViewModel : ViewModel() {
 
-    private val mutableFilterAndOrderChanged = MutableLiveData<Boolean>()
-    val filterAndOrderChanged: LiveData<Boolean> = mutableFilterAndOrderChanged
+    private val mutableStraightOrder = MutableLiveData<Boolean>()
+    val straightOrder: LiveData<Boolean> = mutableStraightOrder
 
-    var straightOrder = true
-    var filterString = ""
+    private val mutableFilterString = MutableLiveData<String>()
+    val filterString: LiveData<String> = mutableFilterString
 
     fun filter(string: String) {
-        filterString = string
-        mutableFilterAndOrderChanged.value = true
+        mutableFilterString.value = string
     }
 
     fun changeOrder(straight: Boolean) {
-        straightOrder = straight
-        mutableFilterAndOrderChanged.value = true
+        mutableStraightOrder.value = straight
     }
 
     fun getHabits(): LiveData<List<Habit>> {

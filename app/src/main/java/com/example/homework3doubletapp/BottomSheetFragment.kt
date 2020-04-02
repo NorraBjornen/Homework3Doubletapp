@@ -34,7 +34,7 @@ class BottomSheetFragment: BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sheet_search.setText(viewModel.filterString)
+        sheet_search.setText(viewModel.filterString.value)
 
         sheet_search.addTextChangedListener {editable ->
             val input = editable.toString()
@@ -53,7 +53,7 @@ class BottomSheetFragment: BottomSheetDialogFragment() {
             }
         }
 
-        (if(viewModel.straightOrder)
+        (if(viewModel.straightOrder.value == true)
             sheet_straight
         else
             sheet_reverse).isChecked = true

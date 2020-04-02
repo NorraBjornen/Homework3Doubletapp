@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import com.example.homework3doubletapp.App
 import com.example.homework3doubletapp.BottomSheetFragment
 import com.example.homework3doubletapp.R
 import com.example.homework3doubletapp.addDivider
@@ -75,8 +74,12 @@ class ListFragment : Fragment() {
             adapter.setItems(actualItems)
         })
 
-        viewModel.filterAndOrderChanged.observe(viewLifecycleOwner, Observer {
-            adapter.actualizeItems(viewModel.filterString, viewModel.straightOrder)
+        viewModel.filterString.observe(viewLifecycleOwner, Observer {
+            adapter.actualizeItems(it)
+        })
+
+        viewModel.straightOrder.observe(viewLifecycleOwner, Observer {
+            adapter.actualizeItems(it)
         })
     }
 

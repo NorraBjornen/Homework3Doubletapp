@@ -35,12 +35,16 @@ class Adapter : RecyclerView.Adapter<ViewHolder>() {
 
     fun setItems(list: List<Habit>){
         myHabits = list
-        actualizeItems(filterString, straightOrder)
+        currentItems = myHabits
+        notifyDataSetChanged()
     }
 
-    fun actualizeItems(prefix: String, order: Boolean) {
+    fun actualizeItems(prefix: String) {
         currentItems = myHabits.filter { it.name?.startsWith(prefix) ?: false }
+        notifyDataSetChanged()
+    }
 
+    fun actualizeItems(order: Boolean) {
         currentItems =
             if (order)
                 currentItems.sortedBy { it.priority }
