@@ -5,6 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework3doubletapp.R
 import com.example.homework3doubletapp.model.Habit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class Adapter : RecyclerView.Adapter<ViewHolder>() {
 
@@ -40,28 +44,37 @@ class Adapter : RecyclerView.Adapter<ViewHolder>() {
 
     fun actualizeItems(prefix: String) {
         filterString = prefix
-        currentItems = myHabits.filter { it.name?.startsWith(prefix) ?: false }
-        notifyDataSetChanged()
+        GlobalScope.launch(Dispatchers.Main) {
+            currentItems = withContext(Dispatchers.Default) {myHabits.filter { it.name?.startsWith(prefix) ?: false }}
+            notifyDataSetChanged()
+        }
     }
 
     fun actualizeItems(order: Boolean) {
         straightOrder = order
-        currentItems =
-            if (order)
-                currentItems.sortedBy { it.priority }
-            else
-                currentItems.sortedByDescending { it.priority }
-
-        notifyDataSetChanged()
+        GlobalScope.launch(Dispatchers.Main) {
+            currentItems = withContext(Dispatchers.Default) {
+                if (order)
+                    currentItems.sortedBy { it.priority }
+                else
+                    currentItems.sortedByDescending { it.priority }
+            }
+            notifyDataSetChanged()
+        }
     }
 
     private fun actualizeItems() {
-        currentItems = myHabits.filter { it.name?.startsWith(filterString) ?: false }
-        currentItems = if (straightOrder)
-            currentItems.sortedBy { it.priority }
-        else
-            currentItems.sortedByDescending { it.priority }
-
-        notifyDataSetChanged()
+        GlobalScope.launch(Dispatchers.Main) {
+            withContext(Dispatchers.Default) {
+                currentItems = myHabits.filter { it.name?.startsWith(filterString) ?: false }
+                currentItems = withContext(Dispatchers.Default) {
+                    if (straightOrder)
+                        currentItems.sortedBy { it.priority }
+                    else
+                        currentItems.sortedByDescending { it.priority }
+                }
+            }
+            notifyDataSetChanged()
+        }
     }
 }

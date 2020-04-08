@@ -2,11 +2,11 @@ package com.example.homework3doubletapp.model
 
 import androidx.lifecycle.LiveData
 import com.example.homework3doubletapp.App
-import com.example.homework3doubletapp.Subscriber
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class Repository(private val habitDao: HabitDao) {
-
-    private val subscribers = mutableListOf<Subscriber>()
 
     fun getHabitsLiveData(): LiveData<List<Habit>> {
         return habitDao.getHabits()
@@ -39,18 +39,15 @@ class Repository(private val habitDao: HabitDao) {
         habit.quantity = quantity
         habit.color = color
 
-        if (isNewHabit) {
-            habitDao.addHabit(habit)
-        } else {
-            habitDao.updateHabit(habit)
+
+        GlobalScope.launch(Dispatchers.IO){
+            if (isNewHabit) {
+                habitDao.addHabit(habit)
+            } else {
+                habitDao.updateHabit(habit)
+            }
         }
-
-        subscribers.forEach { it() }
     }
-
-    fun subscribe(subscriber: Subscriber) = subscribers.add(subscriber)
-
-    fun unsubscribe(subscriber: Subscriber) = subscribers.remove(subscriber)
 
     companion object {
         fun get(): Repository {

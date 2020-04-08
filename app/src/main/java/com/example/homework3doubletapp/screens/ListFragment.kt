@@ -19,6 +19,10 @@ import com.example.homework3doubletapp.model.ListViewModel
 import com.example.homework3doubletapp.recycler.Adapter
 import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ListFragment : Fragment() {
     private lateinit var viewModel: ListViewModel
@@ -26,7 +30,7 @@ class ListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
+        viewModel = ViewModelProvider(requireActivity(), @Suppress("UNCHECKED_CAST") object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return ListViewModel() as T
             }
@@ -64,14 +68,20 @@ class ListFragment : Fragment() {
         }
 
         viewModel.getHabits().observe(viewLifecycleOwner, Observer { list ->
-            val actualItems =
-                if (habitType == HabitType.GOOD) {
-                    list.filter { it.type == HabitType.GOOD }
-                } else {
-                    list.filter { it.type == HabitType.BAD }
+
+            GlobalScope.launch(Dispatchers.Main) {
+
+                val actualItems = withContext(Dispatchers.Default){
+                    if (habitType == HabitType.GOOD) {
+                        list.filter { it.type == HabitType.GOOD }
+                    } else {
+                        list.filter { it.type == HabitType.BAD }
+                    }
                 }
 
-            adapter.setItems(actualItems)
+                adapter.setItems(actualItems)
+            }
+
         })
 
         viewModel.filterString.observe(viewLifecycleOwner, Observer {

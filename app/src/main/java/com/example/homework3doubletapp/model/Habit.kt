@@ -3,6 +3,7 @@ package com.example.homework3doubletapp.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity
 data class Habit(
@@ -13,7 +14,7 @@ data class Habit(
     @ColumnInfo var period: Int,
     @ColumnInfo var quantity: Int,
     @ColumnInfo var color: Int
-) {
+) : Serializable {
     @PrimaryKey(autoGenerate = true) var id: Int? = null
 
     companion object {

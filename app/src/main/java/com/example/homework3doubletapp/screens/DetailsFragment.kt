@@ -18,6 +18,7 @@ import androidx.navigation.Navigation
 import com.example.homework3doubletapp.R
 import com.example.homework3doubletapp.model.*
 import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.coroutines.*
 
 class DetailsFragment : Fragment(), View.OnClickListener {
 
@@ -27,11 +28,13 @@ class DetailsFragment : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+        viewModel = ViewModelProvider(this, @Suppress("UNCHECKED_CAST") object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return DetailsViewModel() as T
             }
         }).get(DetailsViewModel::class.java)
+
+        habit = arguments?.getSerializable(ARGS_HABIT) as Habit? ?: Habit.create()
     }
 
     override fun onCreateView(
@@ -44,8 +47,6 @@ class DetailsFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         save.setOnClickListener(this)
-
-        habit = viewModel.getHabit(arguments?.getInt(ARGS_HABIT_ID) ?: -1)
 
         addImages()
         setValues()
@@ -85,7 +86,6 @@ class DetailsFragment : Fragment(), View.OnClickListener {
             imageView.layoutParams = lp
             imageView.setBackgroundResource(R.drawable.border_black)
 
-            linear_layout.addView(imageView)
 
             val pixel = bitmap.getPixel(
                 (doubleMarginSide + squareSize) * i + marginSide + halfSize,
@@ -106,6 +106,8 @@ class DetailsFragment : Fragment(), View.OnClickListener {
                 rgb.text = resources.getString(R.string.rgb_formatted, r, g, b)
                 hsv.text = resources.getString(R.string.hsv_formatted, a[0], a[1], a[2])
             }
+
+            linear_layout.addView(imageView)
         }
     }
 
@@ -156,6 +158,6 @@ class DetailsFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        const val ARGS_HABIT_ID = "args_habit_id"
+        const val ARGS_HABIT = "args_habit"
     }
 }
