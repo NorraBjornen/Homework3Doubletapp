@@ -9,7 +9,7 @@ import com.example.homework3doubletapp.model.Habit
 class Adapter : RecyclerView.Adapter<ViewHolder>() {
 
     private var filterString = ""
-    private val straightOrder = true
+    private var straightOrder = true
 
     private var myHabits: List<Habit> = listOf()
     private var currentItems: List<Habit> = myHabits
@@ -35,21 +35,32 @@ class Adapter : RecyclerView.Adapter<ViewHolder>() {
 
     fun setItems(list: List<Habit>){
         myHabits = list
-        currentItems = myHabits
-        notifyDataSetChanged()
+        actualizeItems()
     }
 
     fun actualizeItems(prefix: String) {
+        filterString = prefix
         currentItems = myHabits.filter { it.name?.startsWith(prefix) ?: false }
         notifyDataSetChanged()
     }
 
     fun actualizeItems(order: Boolean) {
+        straightOrder = order
         currentItems =
             if (order)
                 currentItems.sortedBy { it.priority }
             else
                 currentItems.sortedByDescending { it.priority }
+
+        notifyDataSetChanged()
+    }
+
+    private fun actualizeItems() {
+        currentItems = myHabits.filter { it.name?.startsWith(filterString) ?: false }
+        currentItems = if (straightOrder)
+            currentItems.sortedBy { it.priority }
+        else
+            currentItems.sortedByDescending { it.priority }
 
         notifyDataSetChanged()
     }

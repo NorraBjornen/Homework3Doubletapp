@@ -12,11 +12,11 @@ class ListViewModel : ViewModel() {
     private val mutableFilterString = MutableLiveData<String>()
     val filterString: LiveData<String> = mutableFilterString
 
-    fun filter(string: String) {
+    fun filter(string: String?) {
         mutableFilterString.value = string
     }
 
-    fun changeOrder(straight: Boolean) {
+    fun changeOrder(straight: Boolean?) {
         mutableStraightOrder.value = straight
     }
 

@@ -2,8 +2,11 @@ package com.example.homework3doubletapp.model
 
 import androidx.lifecycle.LiveData
 import com.example.homework3doubletapp.App
+import com.example.homework3doubletapp.Subscriber
 
 class Repository(private val habitDao: HabitDao) {
+
+    private val subscribers = mutableListOf<Subscriber>()
 
     fun getHabitsLiveData(): LiveData<List<Habit>> {
         return habitDao.getHabits()
@@ -41,7 +44,13 @@ class Repository(private val habitDao: HabitDao) {
         } else {
             habitDao.updateHabit(habit)
         }
+
+        subscribers.forEach { it() }
     }
+
+    fun subscribe(subscriber: Subscriber) = subscribers.add(subscriber)
+
+    fun unsubscribe(subscriber: Subscriber) = subscribers.remove(subscriber)
 
     companion object {
         fun get(): Repository {
