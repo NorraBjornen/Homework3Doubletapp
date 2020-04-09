@@ -44,23 +44,12 @@ class Adapter : RecyclerView.Adapter<ViewHolder>() {
 
     fun actualizeItems(prefix: String) {
         filterString = prefix
-        GlobalScope.launch(Dispatchers.Main) {
-            currentItems = withContext(Dispatchers.Default) {myHabits.filter { it.name?.startsWith(prefix) ?: false }}
-            notifyDataSetChanged()
-        }
+        actualizeItems()
     }
 
     fun actualizeItems(order: Boolean) {
         straightOrder = order
-        GlobalScope.launch(Dispatchers.Main) {
-            currentItems = withContext(Dispatchers.Default) {
-                if (order)
-                    currentItems.sortedBy { it.priority }
-                else
-                    currentItems.sortedByDescending { it.priority }
-            }
-            notifyDataSetChanged()
-        }
+        actualizeItems()
     }
 
     private fun actualizeItems() {
