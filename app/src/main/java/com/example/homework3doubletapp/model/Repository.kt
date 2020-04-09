@@ -12,13 +12,6 @@ class Repository(private val habitDao: HabitDao) {
         return habitDao.getHabits()
     }
 
-    fun getHabit(id: Int?): Habit {
-        if (id == null || id == -1)
-            return Habit.create()
-
-        return habitDao.getHabit(id)
-    }
-
     fun resolveHabit(
         habit: Habit,
         name: String?,

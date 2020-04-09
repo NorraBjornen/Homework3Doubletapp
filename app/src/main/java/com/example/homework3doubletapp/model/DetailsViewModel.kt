@@ -3,9 +3,6 @@ package com.example.homework3doubletapp.model
 import androidx.lifecycle.ViewModel
 
 class DetailsViewModel: ViewModel() {
-    fun getHabit(id: Int?): Habit {
-        return Repository.get().getHabit(id)
-    }
 
     fun resolveHabit(
         habit: Habit,
