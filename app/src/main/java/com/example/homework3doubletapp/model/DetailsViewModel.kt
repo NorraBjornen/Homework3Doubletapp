@@ -1,8 +1,8 @@
 package com.example.homework3doubletapp.model
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class DetailsViewModel: ViewModel() {
@@ -17,7 +17,7 @@ class DetailsViewModel: ViewModel() {
         quantity: Int,
         color: Int
     ) {
-        GlobalScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             Repository.get().resolveHabit(
                 habit,
                 name,

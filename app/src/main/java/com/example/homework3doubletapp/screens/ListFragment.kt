@@ -68,20 +68,14 @@ class ListFragment : Fragment() {
         }
 
         viewModel.getHabits().observe(viewLifecycleOwner, Observer { list ->
-
-            GlobalScope.launch(Dispatchers.Main) {
-
-                val actualItems = withContext(Dispatchers.Default){
-                    if (habitType == HabitType.GOOD) {
-                        list.filter { it.type == HabitType.GOOD }
-                    } else {
-                        list.filter { it.type == HabitType.BAD }
-                    }
+            val actualItems =
+                if (habitType == HabitType.GOOD) {
+                    list.filter { it.type == HabitType.GOOD }
+                } else {
+                    list.filter { it.type == HabitType.BAD }
                 }
 
-                adapter.setItems(actualItems)
-            }
-
+            adapter.setItems(actualItems)
         })
 
         viewModel.filterString.observe(viewLifecycleOwner, Observer {
