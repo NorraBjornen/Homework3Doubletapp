@@ -12,7 +12,7 @@ class Repository(private val habitDao: HabitDao) {
         return habitDao.getHabits()
     }
 
-    fun resolveHabit(
+    suspend fun resolveHabit(
         habit: Habit,
         name: String?,
         description: String?,
@@ -33,12 +33,10 @@ class Repository(private val habitDao: HabitDao) {
         habit.color = color
 
 
-        GlobalScope.launch(Dispatchers.IO){
-            if (isNewHabit) {
-                habitDao.addHabit(habit)
-            } else {
-                habitDao.updateHabit(habit)
-            }
+        if (isNewHabit) {
+            habitDao.addHabit(habit)
+        } else {
+            habitDao.updateHabit(habit)
         }
     }
 
