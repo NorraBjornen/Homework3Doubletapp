@@ -3,6 +3,9 @@ package com.example.homework3doubletapp.model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ListViewModel : ViewModel() {
 
@@ -22,5 +25,17 @@ class ListViewModel : ViewModel() {
 
     fun getHabits(): LiveData<List<Habit>> {
         return Repository.get().getHabitsLiveData()
+    }
+
+    fun deleteHabit(habit: Habit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            Repository.get().deleteHabit(habit)
+        }
+    }
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            Repository.get().loadHabits()
+        }
     }
 }

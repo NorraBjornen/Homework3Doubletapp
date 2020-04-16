@@ -1,11 +1,14 @@
 package com.example.homework3doubletapp.model
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DetailsViewModel: ViewModel() {
+
+    val done = MutableLiveData<Boolean>()
 
     fun resolveHabit(
         habit: Habit,
@@ -28,6 +31,7 @@ class DetailsViewModel: ViewModel() {
                 quantity,
                 color
             )
+            done.postValue(true)
         }
     }
 }

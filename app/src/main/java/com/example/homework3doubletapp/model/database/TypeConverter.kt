@@ -1,6 +1,7 @@
-package com.example.homework3doubletapp.model
+package com.example.homework3doubletapp.model.database
 
 import androidx.room.TypeConverter
+import com.example.homework3doubletapp.model.HabitType
 
 class TypeConverter {
     @TypeConverter
@@ -10,6 +11,8 @@ class TypeConverter {
 
     @TypeConverter
     fun intToType(int: Int): HabitType {
-        return HabitType.valueOf(int)
+        return HabitType.valueOf(
+            int
+        )
     }
 }

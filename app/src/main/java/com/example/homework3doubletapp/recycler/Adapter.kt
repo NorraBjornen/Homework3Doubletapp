@@ -5,10 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework3doubletapp.R
 import com.example.homework3doubletapp.model.Habit
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class Adapter : RecyclerView.Adapter<ViewHolder>() {
 
@@ -53,12 +49,16 @@ class Adapter : RecyclerView.Adapter<ViewHolder>() {
     }
 
     private fun actualizeItems() {
-        currentItems = myHabits.filter { it.name?.startsWith(filterString) ?: false }
+        currentItems = myHabits.filter { it.title?.startsWith(filterString) ?: false }
         currentItems =
             if (straightOrder)
                 currentItems.sortedBy { it.priority }
             else
                 currentItems.sortedByDescending { it.priority }
         notifyDataSetChanged()
+    }
+
+    fun getItem(position: Int): Habit{
+        return currentItems[position]
     }
 }
