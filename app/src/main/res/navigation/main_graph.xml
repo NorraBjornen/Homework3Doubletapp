@@ -5,11 +5,11 @@
 
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="com.example.homework3doubletapp.screens.AboutFragment"
+        android:name="com.example.homework3doubletapp.presentation.screens.AboutFragment"
         android:label="AboutFragment" />
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.example.homework3doubletapp.screens.DetailsFragment"
+        android:name="com.example.homework3doubletapp.presentation.screens.DetailsFragment"
         android:label="DetailsFragment" >
         <argument
             android:name="args_habit_id"
@@ -18,14 +18,14 @@
     </fragment>
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.homework3doubletapp.screens.ListFragment"
+        android:name="com.example.homework3doubletapp.presentation.screens.ListFragment"
         android:label="ListFragment" />
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.homework3doubletapp.screens.MainFragment"
+        android:name="com.example.homework3doubletapp.presentation.screens.MainFragment"
         android:label="MainFragment" />
     <fragment
         android:id="@+id/bottomSheetFragment"
-        android:name="com.example.homework3doubletapp.BottomSheetFragment"
+        android:name="com.example.homework3doubletapp.presentation.BottomSheetFragment"
         android:label="BottomSheetFragment" />
 </navigation>
