@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-class DetailsViewModel: ViewModel() {
+class DetailsViewModel(private val save: SaveHabitUseCase) : ViewModel() {
 
     val done = MutableLiveData<Boolean>()
 
@@ -38,25 +38,8 @@ class DetailsViewModel: ViewModel() {
         habit.color = color
         habit.date = (Date().time / 1000).toInt()
 
-
-
         viewModelScope.launch(Dispatchers.IO) {
-            /*Repository.get().resolveHabit(
-                habit,
-                name,
-                description,
-                priority,
-                type,
-                period,
-                quantity,
-                color
-            )*/
-            SaveHabitUseCase(
-                RepositoryImpl(
-                    App.api,
-                    App.dao
-                ), Dispatchers.IO
-            ).saveHabit(habit, isNewHabit)
+            save.saveHabit(habit, isNewHabit)
             done.postValue(true)
         }
     }

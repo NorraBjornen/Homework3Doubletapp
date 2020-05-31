@@ -18,9 +18,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.domain.entities.Habit
 import com.example.domain.entities.HabitType
+import com.example.domain.usecases.SaveHabitUseCase
 import com.example.homework3doubletapp.R
+import com.example.homework3doubletapp.presentation.App
 import com.example.homework3doubletapp.presentation.viewmodels.DetailsViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
+import javax.inject.Inject
 
 class DetailsFragment : Fragment(), View.OnClickListener {
 
@@ -28,11 +31,17 @@ class DetailsFragment : Fragment(), View.OnClickListener {
     private lateinit var habit: Habit
     private var selectedColor = -1
 
+    @Inject
+    lateinit var saveHabitUseCase: SaveHabitUseCase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (requireActivity().application as App).applicationComponent.inject(this)
+
         viewModel = ViewModelProvider(this, @Suppress("UNCHECKED_CAST") object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return DetailsViewModel() as T
+                return DetailsViewModel(saveHabitUseCase) as T
             }
         }).get(DetailsViewModel::class.java)
 

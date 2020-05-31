@@ -13,24 +13,40 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.domain.entities.HabitType
+import com.example.domain.usecases.DeleteHabitUseCase
+import com.example.domain.usecases.GetHabitsUseCase
+import com.example.domain.usecases.LoadHabitsUseCase
 import com.example.homework3doubletapp.presentation.BottomSheetFragment
 import com.example.homework3doubletapp.R
+import com.example.homework3doubletapp.presentation.App
 import com.example.homework3doubletapp.presentation.viewmodels.ListViewModel
 import com.example.homework3doubletapp.presentation.recycler.Adapter
 import com.example.homework3doubletapp.presentation.recycler.MyItemTouchCallback
 import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import javax.inject.Inject
 
 
 class ListFragment : Fragment() {
     private lateinit var viewModel: ListViewModel
     private lateinit var adapter: Adapter
 
+    @Inject
+    lateinit var load: LoadHabitsUseCase
+    @Inject
+    lateinit var get: GetHabitsUseCase
+    @Inject
+    lateinit var delete: DeleteHabitUseCase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (requireActivity().application as App).applicationComponent.inject(this)
+
         viewModel = ViewModelProvider(requireActivity(), @Suppress("UNCHECKED_CAST") object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return ListViewModel() as T
+                return ListViewModel(get, delete, load) as T
             }
         }).get(ListViewModel::class.java)
     }
@@ -43,6 +59,7 @@ class ListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
