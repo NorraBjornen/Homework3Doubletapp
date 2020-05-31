@@ -11,7 +11,8 @@ class DeleteHabitUseCase(
 ) {
     suspend fun deleteHabit(habit: Habit) {
         withContext(dispatcher) {
-            repository.deleteHabit(habit)
+            repository.deleteHabitWeb(habit)
+            repository.deleteHabitDB(habit)
         }
     }
 }

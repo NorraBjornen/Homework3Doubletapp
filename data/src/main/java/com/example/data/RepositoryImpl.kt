@@ -8,27 +8,30 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class RepositoryImpl(private val api: HabitApi, private val dao: HabitDao): Repository {
-    override suspend fun saveHabitWeb(habit: SimpleHabit): HabitUID = api.addHabit(habit)
+    override suspend fun saveHabitWeb(habit: SimpleHabit): HabitUID =
+        api.addHabit(habit)
 
-    override suspend fun updateHabitWeb(habit: Habit): HabitUID = api.updateHabit(habit)
+    override suspend fun updateHabitWeb(habit: Habit): HabitUID =
+        api.updateHabit(habit)
 
-    override suspend fun saveHabitDB(habit: Habit) {
-        dao.addHabit(Habit(habit))
-    }
+    override suspend fun saveHabitDB(habit: Habit) =
+        dao.addHabit(DataHabit(habit))
 
-    override suspend fun updateHabitDB(habit: Habit) {
-        dao.updateHabit(Habit(habit))
-    }
+    override suspend fun saveHabitsDB(habits: List<Habit>) =
+        dao.addHabits(habits.map { DataHabit(it) })
 
-    override fun getHabits(): Flow<List<Habit>> = dao.getHabits().map { list -> list.map { it.asDomainHabit() } }
+    override suspend fun updateHabitDB(habit: Habit) =
+        dao.updateHabit(DataHabit(habit))
 
-    override suspend fun loadHabits() {
-        val habits = api.getHabits()
-        dao.addHabits(habits.map { Habit(it) })
-    }
+    override suspend fun getHabitsWeb(): List<Habit> =
+        api.getHabits()
 
-    override suspend fun deleteHabit(habit: Habit) {
+    override fun getHabitsDB(): Flow<List<Habit>> =
+        dao.getHabits().map { list -> list.map { it.asDomainHabit() } }
+
+    override suspend fun deleteHabitWeb(habit: Habit) =
         api.deleteHabit(HabitUID(habit.uid))
-        dao.deleteHabit(Habit(habit))
-    }
+
+    override suspend fun deleteHabitDB(habit: Habit) =
+        dao.deleteHabit(DataHabit(habit))
 }

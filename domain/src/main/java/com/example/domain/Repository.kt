@@ -10,11 +10,12 @@ interface Repository {
     suspend fun updateHabitWeb(habit: Habit): HabitUID
 
     suspend fun saveHabitDB(habit: Habit)
+    suspend fun saveHabitsDB(habits: List<Habit>)
     suspend fun updateHabitDB(habit: Habit)
 
-    fun getHabits(): Flow<List<Habit>>
+    fun getHabitsDB(): Flow<List<Habit>>
+    suspend fun getHabitsWeb(): List<Habit>
 
-    suspend fun loadHabits()
-
-    suspend fun deleteHabit(habit: Habit)
+    suspend fun deleteHabitDB(habit: Habit)
+    suspend fun deleteHabitWeb(habit: Habit)
 }

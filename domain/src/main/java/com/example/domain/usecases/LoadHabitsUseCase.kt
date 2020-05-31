@@ -10,7 +10,8 @@ class LoadHabitsUseCase(
 ) {
     suspend fun loadHabits() {
         withContext(dispatcher) {
-            repository.loadHabits()
+            val habits = repository.getHabitsWeb()
+            repository.saveHabitsDB(habits)
         }
     }
 }
