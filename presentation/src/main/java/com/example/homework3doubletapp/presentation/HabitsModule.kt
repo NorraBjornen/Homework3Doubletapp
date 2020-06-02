@@ -7,10 +7,7 @@ import com.example.data.HabitApi
 import com.example.data.HabitDao
 import com.example.data.RepositoryImpl
 import com.example.domain.Repository
-import com.example.domain.usecases.DeleteHabitUseCase
-import com.example.domain.usecases.GetHabitsUseCase
-import com.example.domain.usecases.LoadHabitsUseCase
-import com.example.domain.usecases.SaveHabitUseCase
+import com.example.domain.usecases.*
 import com.example.homework3doubletapp.R
 import dagger.Module
 import dagger.Provides
@@ -24,6 +21,12 @@ import javax.inject.Singleton
 
 @Module
 class HabitsModule {
+
+    @Singleton
+    @Provides
+    fun provideDoneHabitUseCase(repository: Repository): DoneHabitUseCase {
+        return DoneHabitUseCase(repository, Dispatchers.IO)
+    }
 
     @Singleton
     @Provides

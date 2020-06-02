@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.example.domain.usecases.DeleteHabitUseCase
 import com.example.domain.usecases.GetHabitsUseCase
 import com.example.domain.entities.Habit
+import com.example.domain.usecases.DoneHabitUseCase
 import com.example.domain.usecases.LoadHabitsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 class ListViewModel(
     private val getHabitsUseCase: GetHabitsUseCase,
     private val deleteHabitUseCase: DeleteHabitUseCase,
-    private val loadHabitsUseCase: LoadHabitsUseCase
+    private val loadHabitsUseCase: LoadHabitsUseCase,
+    private val doneHabitUseCase: DoneHabitUseCase
 ) : ViewModel() {
 
     private val mutableStraightOrder = MutableLiveData<Boolean>()
@@ -37,6 +39,12 @@ class ListViewModel(
     fun deleteHabit(habit: Habit) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteHabitUseCase.deleteHabit(habit)
+        }
+    }
+
+    fun doneHabit(habit: Habit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            doneHabitUseCase.doneHabit(habit)
         }
     }
 

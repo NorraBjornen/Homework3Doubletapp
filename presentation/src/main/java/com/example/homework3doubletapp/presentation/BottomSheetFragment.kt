@@ -8,6 +8,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.domain.usecases.DeleteHabitUseCase
+import com.example.domain.usecases.DoneHabitUseCase
 import com.example.domain.usecases.GetHabitsUseCase
 import com.example.domain.usecases.LoadHabitsUseCase
 import com.example.homework3doubletapp.R
@@ -26,6 +27,8 @@ class BottomSheetFragment: BottomSheetDialogFragment() {
     lateinit var get: GetHabitsUseCase
     @Inject
     lateinit var delete: DeleteHabitUseCase
+    @Inject
+    lateinit var done: DoneHabitUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +37,7 @@ class BottomSheetFragment: BottomSheetDialogFragment() {
 
         viewModel = ViewModelProvider(requireActivity(), @Suppress("UNCHECKED_CAST") object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return ListViewModel(get, delete, load) as T
+                return ListViewModel(get, delete, load, done) as T
             }
         }).get(ListViewModel::class.java)
     }

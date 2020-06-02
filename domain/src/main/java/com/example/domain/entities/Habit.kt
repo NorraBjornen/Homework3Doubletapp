@@ -1,12 +1,14 @@
 package com.example.domain.entities
 
 import java.io.Serializable
+import java.util.*
 
 data class Habit(
     var count: Int,
     var color: Int,
     var date: Int,
     var description: String?,
+    var done_dates: List<Int>?,
     var frequency: Int,
     var priority: Int,
     var title: String?,
@@ -25,11 +27,19 @@ data class Habit(
             color,
             date,
             description,
+            done_dates,
             frequency,
             priority,
             title,
             type
         )
+    }
+
+    fun getRestTimes(): Int {
+        val now = (Date().time / 1000).toInt()
+        val threshold = now - day * frequency
+        val times = count - done_dates!!.filter { it >=  threshold}.size
+        return times.coerceAtLeast(0)
     }
 
     companion object {
@@ -39,6 +49,7 @@ data class Habit(
                 -1,
                 -1,
                 null,
+                listOf(),
                 -1,
                 -1,
                 null,
@@ -46,5 +57,7 @@ data class Habit(
                 "foo"
             )
         }
+
+        const val day = 60 * 60 * 24
     }
 }

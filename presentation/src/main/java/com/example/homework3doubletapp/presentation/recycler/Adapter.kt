@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework3doubletapp.R
 import com.example.domain.entities.Habit
+import com.example.homework3doubletapp.presentation.viewmodels.ListViewModel
 
-class Adapter : RecyclerView.Adapter<ViewHolder>() {
+class Adapter(private val viewModel: ListViewModel) : RecyclerView.Adapter<ViewHolder>() {
 
     private var filterString = ""
     private var straightOrder = true
@@ -21,7 +22,7 @@ class Adapter : RecyclerView.Adapter<ViewHolder>() {
                 R.layout.list_item,
                 parent,
                 false
-            )
+            ), viewModel
         )
     }
 

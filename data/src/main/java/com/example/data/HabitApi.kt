@@ -3,6 +3,7 @@ package com.example.data
 import com.example.domain.entities.HabitUID
 import com.example.domain.entities.SimpleHabit
 import com.example.domain.entities.Habit
+import com.example.domain.entities.HabitDone
 import retrofit2.http.*
 
 interface HabitApi {
@@ -17,4 +18,7 @@ interface HabitApi {
 
     @HTTP(method = "DELETE", path = "habit", hasBody = true)
     suspend fun deleteHabit(@Body uid: HabitUID)
+
+    @HTTP(method = "POST", path = "habit_done", hasBody = true)
+    suspend fun doneHabit(@Body habitDone: HabitDone)
 }

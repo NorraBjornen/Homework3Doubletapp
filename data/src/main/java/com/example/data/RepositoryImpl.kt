@@ -3,6 +3,7 @@ package com.example.data
 import com.example.domain.entities.Habit
 import com.example.domain.entities.HabitUID
 import com.example.domain.Repository
+import com.example.domain.entities.HabitDone
 import com.example.domain.entities.SimpleHabit
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -34,4 +35,8 @@ class RepositoryImpl(private val api: HabitApi, private val dao: HabitDao): Repo
 
     override suspend fun deleteHabitDB(habit: Habit) =
         dao.deleteHabit(DataHabit(habit))
+
+    override suspend fun doneHabitWeb(habitDone: HabitDone) {
+        api.doneHabit(habitDone)
+    }
 }

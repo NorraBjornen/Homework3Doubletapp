@@ -5,6 +5,7 @@ data class SimpleHabit(
     var color: Int,
     var date: Int,
     var description: String?,
+    var done_dates: List<Int>?,
     var frequency: Int,
     var priority: Int,
     var title: String?,

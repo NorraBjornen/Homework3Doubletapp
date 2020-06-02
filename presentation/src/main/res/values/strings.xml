@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Habit</string>
     <string name="name">Name</string>
     <string name="good">Good</string>
@@ -23,11 +23,18 @@
     <string name="find">Find</string>
 
 
-    <string name="token">035c58f1-83a3-4ac6-8468-6f9fe1e7e09e</string>
+    <string name="token" tools:ignore="TypographyDashes">035c58f1-83a3-4ac6-8468-6f9fe1e7e09e</string>
     <string name="base_url">https://droid-test-server.doubletapp.ru/api/</string>
 
-    <string name="image_url">https://sun9-47.userapi.com/c629421/v629421486/ff54/jNCCXh3VXmk.jpg?ava=1</string>
+    <string name="image_url" tools:ignore="TypographyDashes">https://sun9-47.userapi.com/c629421/v629421486/ff54/jNCCXh3VXmk.jpg?ava=1</string>
 
+    <string name="good_not_exceed">Стоит выполнить еще %d раз</string>
+    <string name="good_exceed">You are breathtaking!</string>
+    <string name="good_enough">Отлично! Привычка сформирована!</string>
+
+    <string name="bad_not_exceed">Можно выполнить еще %d раз</string>
+    <string name="bad_exceed">Останови это безумие!</string>
+    <string name="bad_enough">Лимит выполнений плохих привычек иссяк</string>
 
     <string-array name="priority_list">
         <item>0</item>

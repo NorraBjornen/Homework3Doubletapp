@@ -3,19 +3,43 @@ package com.example.homework3doubletapp.presentation.recycler
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework3doubletapp.R
 import com.example.domain.entities.Habit
 import com.example.domain.entities.HabitType
 import com.example.homework3doubletapp.presentation.screens.DetailsFragment
+import com.example.homework3doubletapp.presentation.viewmodels.ListViewModel
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item.view.*
 
-class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
+class ViewHolder(override val containerView: View, private val viewModel: ListViewModel) : RecyclerView.ViewHolder(containerView),
     LayoutContainer {
 
     lateinit var habit: Habit
+
+    init {
+        val context = containerView.context
+        containerView.habit_done.setOnClickListener {
+            val rest = habit.getRestTimes()
+            val text = if(habit.type == HabitType.GOOD.value) {
+                when(rest) {
+                    0 -> context.resources.getString(R.string.good_exceed)
+                    1 -> context.resources.getString(R.string.good_enough)
+                    else -> context.resources.getString(R.string.good_not_exceed, rest - 1)
+                }
+            } else {
+                when(rest) {
+                    0 -> context.resources.getString(R.string.bad_exceed)
+                    1 -> context.resources.getString(R.string.bad_enough)
+                    else -> context.resources.getString(R.string.bad_not_exceed, rest - 1)
+                }
+            }
+            Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+            viewModel.doneHabit(habit)
+        }
+    }
 
     fun bind(habit: Habit) {
         this.habit = habit
@@ -36,7 +60,7 @@ class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(con
 
         containerView.priority.text = habit.priority.toString()
 
-        containerView.quantity.text = habit.count.toString()
+        containerView.quantity.text = habit.getRestTimes().toString()//habit.count.toString()
 
         containerView.setOnClickListener {
             val bundle = Bundle()
