@@ -1,4 +1,4 @@
-package com.example.homework3doubletapp.presentation
+package com.example.homework3doubletapp.presentation.di.modules
 
 import android.content.Context
 import androidx.room.Room
@@ -21,6 +21,12 @@ import javax.inject.Singleton
 
 @Module
 class HabitsModule {
+
+    @Singleton
+    @Provides
+    fun provideToastContentUseCase(): ToastContentUseCase {
+        return ToastContentUseCase()
+    }
 
     @Singleton
     @Provides

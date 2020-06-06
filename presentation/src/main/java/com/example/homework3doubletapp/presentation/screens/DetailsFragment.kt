@@ -13,14 +13,13 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.domain.entities.Habit
 import com.example.domain.entities.HabitType
-import com.example.domain.usecases.SaveHabitUseCase
 import com.example.homework3doubletapp.R
 import com.example.homework3doubletapp.presentation.App
+import com.example.homework3doubletapp.presentation.di.ViewModelFactory
 import com.example.homework3doubletapp.presentation.viewmodels.DetailsViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
 import javax.inject.Inject
@@ -32,18 +31,14 @@ class DetailsFragment : Fragment(), View.OnClickListener {
     private var selectedColor = -1
 
     @Inject
-    lateinit var saveHabitUseCase: SaveHabitUseCase
+    lateinit var viewModelFactory: ViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         (requireActivity().application as App).applicationComponent.inject(this)
 
-        viewModel = ViewModelProvider(this, @Suppress("UNCHECKED_CAST") object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return DetailsViewModel(saveHabitUseCase) as T
-            }
-        }).get(DetailsViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(DetailsViewModel::class.java)
 
         habit = arguments?.getSerializable(ARGS_HABIT) as Habit? ?: Habit.create()
     }

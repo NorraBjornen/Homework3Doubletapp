@@ -13,6 +13,7 @@ import com.example.homework3doubletapp.presentation.screens.DetailsFragment
 import com.example.homework3doubletapp.presentation.viewmodels.ListViewModel
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item.view.*
+import com.example.domain.entities.ToastContentType.*
 
 class ViewHolder(override val containerView: View, private val viewModel: ListViewModel) : RecyclerView.ViewHolder(containerView),
     LayoutContainer {
@@ -23,21 +24,17 @@ class ViewHolder(override val containerView: View, private val viewModel: ListVi
         val context = containerView.context
         containerView.habit_done.setOnClickListener {
             val rest = habit.getRestTimes()
-            val text = if(habit.type == HabitType.GOOD.value) {
-                when(rest) {
-                    0 -> context.resources.getString(R.string.good_exceed)
-                    1 -> context.resources.getString(R.string.good_enough)
-                    else -> context.resources.getString(R.string.good_not_exceed, rest - 1)
-                }
-            } else {
-                when(rest) {
-                    0 -> context.resources.getString(R.string.bad_exceed)
-                    1 -> context.resources.getString(R.string.bad_enough)
-                    else -> context.resources.getString(R.string.bad_not_exceed, rest - 1)
-                }
+
+            val text = when(viewModel.doneHabit(habit)) {
+                GOOD_EXCEED -> context.resources.getString(R.string.good_exceed)
+                GOOD_ENOUGH -> context.resources.getString(R.string.good_enough)
+                GOOD_NOT_EXCEED -> context.resources.getString(R.string.good_not_exceed, rest - 1)
+                BAD_EXCEED -> context.resources.getString(R.string.bad_exceed)
+                BAD_ENOUGH -> context.resources.getString(R.string.bad_enough)
+                BAD_NOT_EXCEED -> context.resources.getString(R.string.bad_not_exceed, rest - 1)
             }
+
             Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
-            viewModel.doneHabit(habit)
         }
     }
 
@@ -60,7 +57,7 @@ class ViewHolder(override val containerView: View, private val viewModel: ListVi
 
         containerView.priority.text = habit.priority.toString()
 
-        containerView.quantity.text = habit.getRestTimes().toString()//habit.count.toString()
+        containerView.quantity.text = habit.getRestTimes().toString()
 
         containerView.setOnClickListener {
             val bundle = Bundle()

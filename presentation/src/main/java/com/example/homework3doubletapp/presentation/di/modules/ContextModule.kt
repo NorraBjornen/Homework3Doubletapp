@@ -1,4 +1,4 @@
-package com.example.homework3doubletapp.presentation
+package com.example.homework3doubletapp.presentation.di.modules
 
 import android.content.Context
 import dagger.Module
