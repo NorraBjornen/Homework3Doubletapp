@@ -95,7 +95,7 @@ class DetailsFragment : Fragment(), View.OnClickListener {
             imageView.setImageResource(R.drawable.square)
             imageView.layoutParams = lp
             imageView.setBackgroundResource(R.drawable.border_black)
-
+            imageView.id = R.id.selected_color + i + 1
 
             val pixel = bitmap.getPixel(
                 (doubleMarginSide + squareSize) * i + marginSide + halfSize,
